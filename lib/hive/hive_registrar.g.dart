@@ -7,6 +7,14 @@ import 'package:thesis_app/hive/hive_adapters.dart';
 
 extension HiveRegistrar on HiveInterface {
   void registerAdapters() {
+    registerAdapter(LiveAdapter());
+    registerAdapter(UserAdapter());
+  }
+}
+
+extension IsolatedHiveRegistrar on IsolatedHiveInterface {
+  void registerAdapters() {
+    registerAdapter(LiveAdapter());
     registerAdapter(UserAdapter());
   }
 }

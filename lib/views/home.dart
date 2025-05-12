@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:thesis_app/views/live.dart';
+import 'package:thesis_app/views/live_pages/live.dart';
 import 'package:thesis_app/views/shop_pages/my_shop.dart';
 import 'package:thesis_app/views/profile.dart';
 import 'package:thesis_app/views/sold_products.dart';
@@ -59,6 +59,7 @@ class _HomeState extends State<Home> {
           return;
         }
         if (isFirstRouteInCurrentTab) {
+          // ignore: use_build_context_synchronously
           Navigator.pop(context);
         }
       },

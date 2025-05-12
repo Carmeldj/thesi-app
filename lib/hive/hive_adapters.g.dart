@@ -8,7 +8,7 @@ part of 'hive_adapters.dart';
 
 class UserAdapter extends TypeAdapter<User> {
   @override
-  final int typeId = 0;
+  final typeId = 0;
 
   @override
   User read(BinaryReader reader) {
@@ -25,13 +25,14 @@ class UserAdapter extends TypeAdapter<User> {
       profilePicture: fields[3] as String?,
       type: fields[6] as String?,
       role: fields[7] as String?,
+      accessToken: fields[8] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, User obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(9)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -47,7 +48,9 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(6)
       ..write(obj.type)
       ..writeByte(7)
-      ..write(obj.role);
+      ..write(obj.role)
+      ..writeByte(8)
+      ..write(obj.accessToken);
   }
 
   @override
@@ -57,6 +60,49 @@ class UserAdapter extends TypeAdapter<User> {
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is UserAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
+}
+
+class LiveAdapter extends TypeAdapter<Live> {
+  @override
+  final typeId = 1;
+
+  @override
+  Live read(BinaryReader reader) {
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
+    return Live(
+      id: fields[0] as String?,
+      userId: fields[1] as String?,
+      members: (fields[2] as List?)?.cast<String>(),
+      updateAt: fields[3] as String?,
+    );
+  }
+
+  @override
+  void write(BinaryWriter writer, Live obj) {
+    writer
+      ..writeByte(4)
+      ..writeByte(0)
+      ..write(obj.id)
+      ..writeByte(1)
+      ..write(obj.userId)
+      ..writeByte(2)
+      ..write(obj.members)
+      ..writeByte(3)
+      ..write(obj.updateAt);
+  }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is LiveAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

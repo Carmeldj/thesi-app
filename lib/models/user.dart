@@ -9,6 +9,7 @@ class User extends HiveObject {
   String? bio;
   String? type;
   String? role;
+  String? accessToken;
 
   User({
     this.id,
@@ -19,6 +20,7 @@ class User extends HiveObject {
     this.profilePicture,
     this.type,
     this.role,
+    this.accessToken,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -31,6 +33,7 @@ class User extends HiveObject {
       bio: json['bio'] as String?,
       type: json['type'] as String?,
       role: json['role'] as String?,
+      accessToken: json['access_token'] as String?,
     );
   }
 
@@ -44,6 +47,7 @@ class User extends HiveObject {
       'bio': bio,
       'type': type,
       'role': role,
+      'access_token': accessToken,
     };
   }
 }

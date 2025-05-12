@@ -3,13 +3,13 @@ import 'package:thesis_app/components/form_input.dart';
 import 'package:thesis_app/constants/colors.dart';
 import 'package:thesis_app/constants/fonts.dart';
 
-class CreateShop extends StatelessWidget {
-  CreateShop({super.key});
+class CreateProduct extends StatelessWidget {
+  CreateProduct({super.key});
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController shopNameController = TextEditingController();
-  final TextEditingController otherInfosController = TextEditingController();
-  final TextEditingController categorieNameController = TextEditingController();
+  final productNameController = TextEditingController();
+  final specifityNameController = TextEditingController();
+  final priceController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,39 +20,38 @@ class CreateShop extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
-      body: Center(
-        child: Form(
-          key: _formKey,
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
+      body: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Center(
+          child: Form(
+            key: _formKey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
                   height: 100,
-                  width: 100,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(100),
+                    borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: Colors.black),
                   ),
-                  child: GestureDetector(onTap: () {}),
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: Center(child: Text("Ajouter une photo")),
+                  ),
                 ),
                 const SizedBox(height: 20),
                 FormInput(
-                  controller: shopNameController,
-                  hintText: "Nom de la boutique",
+                  controller: productNameController,
+                  hintText: "Nom du produit",
                 ),
                 const SizedBox(height: 20),
                 FormInput(
-                  controller: categorieNameController,
-                  hintText: "Catégorie",
+                  controller: specifityNameController,
+                  hintText: "Spécifité",
                 ),
                 const SizedBox(height: 20),
-                FormInput(
-                  controller: categorieNameController,
-                  hintText: "Autres informations",
-                ),
+                FormInput(controller: priceController, hintText: "Prix"),
                 const SizedBox(height: 100),
                 TextButton(
                   onPressed: () {
@@ -60,7 +59,6 @@ class CreateShop extends StatelessWidget {
                   },
                   child: Container(
                     height: 50,
-                    width: 300,
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.black),
                       borderRadius: BorderRadius.circular(10),
@@ -68,7 +66,7 @@ class CreateShop extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        "Créer une boutique",
+                        "Créer un produit",
                         style: TextStyle(fontSize: textNormal),
                       ),
                     ),

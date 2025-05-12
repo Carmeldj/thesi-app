@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:thesis_app/constants/colors.dart';
 import 'package:thesis_app/constants/fonts.dart';
+import 'package:thesis_app/views/shop_pages/create_product.dart';
 import 'package:thesis_app/views/shop_pages/create_shop.dart';
 
 class MyShopPage extends StatelessWidget {
@@ -238,7 +239,11 @@ class MyShopPage extends StatelessWidget {
                 ),
               ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(
+            context,
+          ).push(MaterialPageRoute(builder: (context) => CreateProduct()));
+        },
         child: Icon(Icons.add),
       ),
     );
