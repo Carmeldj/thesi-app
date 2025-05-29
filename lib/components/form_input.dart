@@ -15,6 +15,12 @@ class FormInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please $hintText';
+        }
+        return null;
+      },
       initialValue: initialValue,
       controller: controller,
       decoration: InputDecoration(

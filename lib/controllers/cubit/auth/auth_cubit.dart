@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:hive_ce_flutter/adapters.dart';
@@ -14,6 +15,7 @@ class AuthCubit extends Cubit<AuthState> {
 
   void login(String email, String password) async {
     emit(AuthLoading());
+    dio.options.headers['Content-Type'] = 'application/json';
 
     try {
       final response = await dio.post(
@@ -21,13 +23,14 @@ class AuthCubit extends Cubit<AuthState> {
         data: {'email': email, 'password': password},
       );
 
-      if (response.statusCode == 200) {
-        emit(AuthSucess());
-        final user = User.fromJson(response.data['user']);
-        myBox.put('user', user);
-        myBox.put('token', response.data['token']);
-      }
+      final user = User.fromJson(response.data['user']);
+      myBox.put('user', user);
+      myBox.put('token', response.data['access_token']);
+      myBox.put('streamToken', response.data['token']);
+
+      emit(AuthSucess());
     } on DioException catch (e) {
+      log(e.message.toString());
       emit(AuthFailure(e.message!));
     }
   }

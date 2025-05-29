@@ -19,6 +19,8 @@ class UserAdapter extends TypeAdapter<User> {
     return User(
       id: fields[0] as String?,
       username: fields[1] as String?,
+      firstname: fields[10] as String?,
+      lastname: fields[11] as String?,
       email: fields[2] as String?,
       bio: fields[5] as String?,
       phoneNumber: fields[4] as String?,
@@ -26,13 +28,14 @@ class UserAdapter extends TypeAdapter<User> {
       type: fields[6] as String?,
       role: fields[7] as String?,
       accessToken: fields[8] as String?,
+      streamToken: fields[9] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, User obj) {
     writer
-      ..writeByte(9)
+      ..writeByte(12)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -50,7 +53,13 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(7)
       ..write(obj.role)
       ..writeByte(8)
-      ..write(obj.accessToken);
+      ..write(obj.accessToken)
+      ..writeByte(9)
+      ..write(obj.streamToken)
+      ..writeByte(10)
+      ..write(obj.firstname)
+      ..writeByte(11)
+      ..write(obj.lastname);
   }
 
   @override

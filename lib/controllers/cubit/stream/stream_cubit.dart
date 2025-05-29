@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_ce/hive.dart';
 import 'package:dio/dio.dart';
@@ -14,17 +12,17 @@ class StreamCubit extends Cubit<StreamState> {
   final dio = Dio();
   StreamCubit() : super(StreamInitial());
 
-  void createUserStream() async {
+  Future<dynamic> createUserStream() async {
     emit(StreamLoading());
     try {
       final user = myBox.get("user") as User;
-      final accessToken = user.accessToken;
+      final accessToken = myBox.get("token") as String;
       final userId = user.id;
       dio.options.headers['Authorization'] = 'Bearer $accessToken';
       dio.options.headers['Content-Type'] = 'application/json';
       final response = await dio.post("$apiUrl/livestream/$userId");
 
-      log(response.data);
+      return response.data;
     } catch (e) {
       emit(StreamFailure('Failed to create stream'));
     }

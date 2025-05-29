@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:stream_video/stream_video.dart';
+import 'package:thesis_app/controllers/cubit/stream/stream_cubit.dart';
+import 'package:thesis_app/views/live_pages/live_stream_screen.dart';
 
 class LivePage extends StatelessWidget {
-  const LivePage({super.key});
-
+  LivePage({super.key});
+  final StreamCubit streamCubit = StreamCubit();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,13 +69,53 @@ class LivePage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Navigator.of(
-          //   context,
-          // ).push(MaterialPageRoute(builder: (context) => CreateProduct()));
+        onPressed: () async {
+          final streamData = await streamCubit.createUserStream();
+          _createLivestream(context, streamData["streamId"]);
         },
         child: Icon(Icons.play_arrow),
       ),
     );
+  }
+}
+
+Future<void> _createLivestream(BuildContext context, String callId) async {
+  final call = StreamVideo.instance.makeCall(
+    callType: StreamCallType.liveStream(),
+    id: callId,
+  );
+
+  final result = await call.getOrCreate(
+    members: [
+      MemberRequest(userId: StreamVideo.instance.currentUser.id, role: 'host'),
+    ],
+  ); // Call object is created
+
+  if (result.isFailure) {
+    debugPrint('Not able to create a call.');
+    return;
+  }
+
+  if (result.isSuccess) {
+    // Set some default behaviour for how our devices should be configured once we join a call
+    final connectOptions = CallConnectOptions(
+      camera: TrackOption.enabled(),
+      microphone: TrackOption.enabled(),
+    );
+
+    // Our local app user can join and receive events
+    await call.join(connectOptions: connectOptions);
+
+    // Allow others to see and join the call (exit backstage mode)
+    await call.goLive();
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => LiveStreamScreen(livestreamCall: call),
+      ),
+    );
+  } else {
+    debugPrint('Not able to create a call.');
   }
 }

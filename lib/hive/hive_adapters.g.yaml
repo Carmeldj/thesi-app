@@ -5,7 +5,7 @@ nextTypeId: 2
 types:
   User:
     typeId: 0
-    nextIndex: 9
+    nextIndex: 12
     fields:
       id:
         index: 0
@@ -25,6 +25,12 @@ types:
         index: 7
       accessToken:
         index: 8
+      streamToken:
+        index: 9
+      firstname:
+        index: 10
+      lastname:
+        index: 11
   Live:
     typeId: 1
     nextIndex: 4
