@@ -40,4 +40,37 @@ class AuthCubit extends Cubit<AuthState> {
       emit(AuthFailure(e.message!));
     }
   }
+
+  void register(
+    String email,
+    String password,
+    String username,
+    String firstname,
+    String lastname,
+    String? image,
+    String? phoneNumber,
+  ) async {
+    emit(AuthLoading());
+    dio.options.headers['Content-Type'] = 'application/json';
+
+    try {
+      final response = await dio.post(
+        '$apiUrl/users',
+        data: {
+          'email': email,
+          'password': password,
+          'username': username,
+          'firstname': firstname,
+          'lastname': lastname,
+          'image': image,
+          'phoneNumber': phoneNumber,
+        },
+      );
+      log(response.data.toString());
+      emit(AuthSucess());
+    } on DioException catch (e) {
+      log(e.message.toString());
+      emit(AuthFailure(e.message!));
+    }
+  }
 }

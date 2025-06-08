@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hive_ce_flutter/adapters.dart';
+import 'package:stream_video/stream_video.dart';
+import 'package:thesis_app/constants/environement_var.dart';
+import 'package:thesis_app/controllers/cubit/stream/stream_cubit.dart';
 import 'package:thesis_app/views/live_pages/go_live_page.dart';
 import 'package:thesis_app/views/shop_pages/home_page.dart';
 import 'package:thesis_app/views/profile.dart';
@@ -13,7 +17,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int currentPageIndex = 0;
-
+  final myBox = Hive.box('db');
   final List<Widget> pages = <Widget>[
     HomePage(),
     GoLivePage(),
@@ -23,6 +27,21 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    final user = myBox.get('user');
+    final streamToken = myBox.get('streamToken') as String?;
+    final StreamCubit streamCubit = StreamCubit();
+
+    StreamVideo.reset();
+    StreamVideo(
+      streamApiKey,
+      user: User(info: UserInfo(name: user.username, id: user.id)),
+      userToken: streamToken,
+      tokenLoader: (userId) async {
+        final token = await streamCubit.getStreamUserToken();
+        return token["token"];
+      },
+    );
+
     return Scaffold(
       bottomNavigationBar: NavigationBar(
         height: 60,

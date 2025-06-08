@@ -349,9 +349,7 @@ Future<void> _createLivestream(BuildContext context, String callId) async {
 
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => LiveStreamScreen(livestreamCall: call),
-      ),
+      MaterialPageRoute(builder: (context) => LiveStreamScreen(call: call)),
     );
   } else {
     debugPrint('Not able to create a call.');

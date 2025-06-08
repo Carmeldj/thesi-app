@@ -2,8 +2,6 @@ import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive_ce_flutter/adapters.dart';
-import 'package:stream_video/stream_video.dart';
-import 'package:thesis_app/constants/environement_var.dart';
 import 'package:thesis_app/controllers/cubit/auth/auth_cubit.dart';
 import 'package:thesis_app/controllers/cubit/stream/stream_cubit.dart';
 import 'package:thesis_app/views/auth/login.dart';
@@ -33,31 +31,14 @@ class MyApp extends StatelessWidget {
   }
 }
 
-bool _checkLogin(BuildContext context) {
+dynamic _checkLogin(BuildContext context) {
   final myBox = Hive.box('db');
-  final accessToken = myBox.get("token");
-
-  final user = myBox.get('user');
-  if (user != null) {
-    final streamToken = myBox.get('streamToken') as String?;
-    final StreamCubit streamCubit = StreamCubit();
-    if (StreamVideo != null) {
-      StreamVideo.reset();
-      StreamVideo(
-        streamApiKey,
-        user: User(info: UserInfo(name: user.username, id: user.id)),
-        userToken: streamToken,
-        tokenLoader: (userId) async {
-          final token = await streamCubit.getStreamUserToken();
-          return token["token"];
-        },
-      );
-    }
-
-    final jwt = JWT.decode(accessToken);
-    return DateTime.fromMillisecondsSinceEpoch(
-      jwt.payload["exp"] * 1000,
-    ).isBefore(DateTime.now());
+  if (myBox.isEmpty) {
+    return false;
   }
-  return false;
+  final accessToken = myBox.get("token") as String;
+  final jwt = JWT.decode(accessToken);
+  return DateTime.fromMillisecondsSinceEpoch(
+    jwt.payload["exp"] * 1000,
+  ).isAfter(DateTime.now());
 }

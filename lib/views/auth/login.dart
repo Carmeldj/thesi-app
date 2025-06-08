@@ -44,7 +44,7 @@ class Login extends StatelessWidget {
         },
         builder: (context, state) {
           return Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(20),
             child: Form(
               key: _formKey,
               child: Center(
