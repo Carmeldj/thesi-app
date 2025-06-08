@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 
-class FormInput extends StatelessWidget {
+class Input extends StatelessWidget {
   final TextEditingController controller;
   final String? initialValue;
-  final String hintText;
+  final InputDecoration? decoration;
+  final int? minLines;
 
-  const FormInput({
+  const Input({
     super.key,
     required this.controller,
-    required this.hintText,
     this.initialValue,
+    this.decoration,
+    this.minLines,
   });
 
   @override
@@ -17,17 +19,17 @@ class FormInput extends StatelessWidget {
     return TextFormField(
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Please $hintText';
+          return 'Please ';
         }
         return null;
       },
+      minLines:
+          minLines, // any number you need (It works as the rows for the textarea)
+      keyboardType: TextInputType.multiline,
+      maxLines: null,
       initialValue: initialValue,
       controller: controller,
-      decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: TextStyle(color: Colors.grey),
-        border: OutlineInputBorder(borderSide: BorderSide(color: Colors.white)),
-      ),
+      decoration: decoration,
     );
   }
 }

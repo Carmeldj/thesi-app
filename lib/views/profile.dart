@@ -14,10 +14,11 @@ class ProfilePage extends StatelessWidget {
           myBox.delete("user");
           myBox.delete("token");
           myBox.clear();
-          Navigator.pushAndRemoveUntil(
+          Navigator.of(context).pop();
+
+          Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => Login()),
-            (route) => false,
           );
         },
         child: Text('Logout'),

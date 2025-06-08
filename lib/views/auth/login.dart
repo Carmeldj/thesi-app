@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:thesis_app/components/form_input.dart';
 import 'package:thesis_app/constants/colors.dart';
@@ -15,7 +13,6 @@ class Login extends StatelessWidget {
   final String passwordHintText = 'Enter your password';
   final String initialValue = '';
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final AuthCubit authCubit = AuthCubit();
 
   Login({super.key});
 
@@ -24,7 +21,6 @@ class Login extends StatelessWidget {
     return Scaffold(
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, state) {
-          log("Loading ---------------------------------");
           if (state is AuthLoading) {
             // Show loading indicator
             showDialog(
@@ -33,8 +29,6 @@ class Login extends StatelessWidget {
               builder: (context) => Center(child: CircularProgressIndicator()),
             );
           } else if (state is AuthSucess) {
-            log("Success ---------------------------------");
-
             // Navigate to the next screen
             Navigator.pushAndRemoveUntil(
               context,
@@ -42,7 +36,6 @@ class Login extends StatelessWidget {
               (route) => false,
             );
           } else if (state is AuthFailure) {
-            log("Failure ---------------------------------");
             // Show error message
             ScaffoldMessenger.of(
               context,
@@ -73,7 +66,7 @@ class Login extends StatelessWidget {
                     TextButton(
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          authCubit.login(
+                          context.read<AuthCubit>().login(
                             emailController.text,
                             passwordController.text,
                           );

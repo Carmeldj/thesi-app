@@ -13,6 +13,12 @@ class AuthCubit extends Cubit<AuthState> {
   final myBox = Hive.box('db');
   AuthCubit() : super(AuthInitial());
 
+  // @override
+  // void onChange(Change<AuthState> change) {
+  //   super.onChange(change);
+  //   print(change);
+  // }
+
   void login(String email, String password) async {
     emit(AuthLoading());
     dio.options.headers['Content-Type'] = 'application/json';

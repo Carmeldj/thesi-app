@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:stream_video_flutter/stream_video_flutter.dart';
 import 'package:thesis_app/views/live_pages/backstage.dart';
 import 'package:thesis_app/views/live_pages/live_ended.dart';
-import 'package:thesis_app/views/live_pages/live_stream_live.dart';
+// import 'package:thesis_app/views/live_pages/live_stream_live.dart';
 
 class LiveStreamScreen extends StatefulWidget {
   const LiveStreamScreen({super.key, required this.livestreamCall});
@@ -47,7 +47,7 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                   );
                 }
 
-                return LivestreamLiveWidget(call: widget.livestreamCall);
+                return StreamCallContainer(call: widget.livestreamCall);
               }
             },
           ),
