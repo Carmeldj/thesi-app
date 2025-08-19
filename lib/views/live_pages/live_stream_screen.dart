@@ -61,7 +61,7 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
     widget.call.state.listen((callState) {
       if (!mounted) return;
       setState(() {
-        viewerCount = callState.participantCount - 1; // Exclude the host
+        viewerCount = callState.participantCount; // Exclude the host
       });
     });
   }
@@ -127,17 +127,13 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
     });
   }
 
-  void _shareProduct(dynamic product) {
-    _addComment('🛍️ Check out: ${product["name"]} - ${product["price"]}');
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
           // Video Stream Background
-          Container(
+          SizedBox(
             width: double.infinity,
             height: double.infinity,
             child: StreamCallContainer(
@@ -202,7 +198,7 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
             bottom: 120,
             left: 20,
             right: 100,
-            child: Container(
+            child: SizedBox(
               height: 200,
               child: ListView.builder(
                 reverse: true,
@@ -243,8 +239,7 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                 SizedBox(height: 15),
                 _buildControlButton(
                   icon: Icons.flip_camera_ios,
-                  onTap:
-                      () => widget.call.setCameraPosition(CameraPosition.back),
+                  onTap: () => widget.call.flipCamera(),
                 ),
                 SizedBox(height: 15),
                 _buildControlButton(
@@ -416,7 +411,7 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                             decoration: BoxDecoration(
                               color:
                                   isPinned
-                                      ? Colors.pink.withOpacity(0.1)
+                                      ? const Color.fromARGB(103, 233, 30, 98)
                                       : Colors.grey.shade900,
                               borderRadius: BorderRadius.circular(12),
                               border:
@@ -547,24 +542,6 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(width: 10),
-                                    Expanded(
-                                      child: ElevatedButton.icon(
-                                        onPressed: () => _shareProduct(product),
-                                        icon: Icon(Icons.share, size: 16),
-                                        label: Text(
-                                          'Share',
-                                          style: TextStyle(fontSize: 12),
-                                        ),
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Colors.purple,
-                                          foregroundColor: Colors.white,
-                                          padding: EdgeInsets.symmetric(
-                                            vertical: 8,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
                                   ],
                                 ),
                               ],
@@ -581,7 +558,6 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
                         width: double.infinity,
                         child: ElevatedButton.icon(
                           onPressed: () {
-                            // TODO: Implement add product functionality
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
@@ -652,21 +628,6 @@ class _LiveStreamScreenState extends State<LiveStreamScreen> {
           ),
         ],
       ),
-      // StreamCallContainer(
-      //   call: widget.call,
-      //   callContentBuilder: (context, call, callState) {
-      //     return StreamCallContent(
-      //       call: call,
-      //       callState: callState,
-      //       callParticipantsBuilder: (context, call, callState) {
-      //         return StreamCallParticipant(
-      //           call: call,
-      //           participant: callState.localParticipant!,
-      //         );
-      //       },
-      //     );
-      //   },
-      // ),
     );
   }
 }
